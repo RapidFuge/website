@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+@layer base {
+    :root {
+        --background: white;
+        --dot-color: theme('colors.zinc.300');
+    }
+
+    .dark {
+        --background: theme('colors.zinc.900');
+        --dot-color: theme('colors.zinc.800');
+    }
+
+    body {
+        background-color: var(--background);
+        background-image: radial-gradient(var(--dot-color) 1.5px, transparent 0);
+        background-size: 1.7rem 1.7rem;
+        background-position: center 1rem;
+    }
+}
