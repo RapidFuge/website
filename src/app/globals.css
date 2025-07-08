@@ -1,7 +1,12 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
-@layer base {
+html,
+body {
+    height: 100%;
+}
+
+/* @layer base {
     :root {
         --background: white;
         --dot-color: theme('colors.zinc.300');
@@ -18,4 +23,4 @@
         background-size: 1.7rem 1.7rem;
         background-position: center 1rem;
     }
-}
+} */

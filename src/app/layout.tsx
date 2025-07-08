@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { Header } from "@/components/Header";
+import { ClientLayout } from "@/components/ClientLayout"; // 1. Import the new component
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,13 +13,10 @@ export const metadata: Metadata = {
   description: "Personal website and portfolio of RapidFuge",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      {/* REMOVE bg-white dark:bg-zinc-900 FROM HERE */}
       <body className={`${inter.className} text-zinc-900 dark:text-zinc-50 transition-colors duration-300`}>
         <ThemeProvider
           attribute="class"
@@ -27,10 +24,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="max-w-3xl mx-auto p-4 bg-dot-pattern bg-dot-size">
-            <Header />
-            <main className="mt-16">{children}</main>
-          </div>
+          <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>
       </body>
     </html>
