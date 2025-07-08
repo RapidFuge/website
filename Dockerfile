@@ -1,27 +1,26 @@
+# Build stage
 FROM node:lts-alpine AS builder
 WORKDIR /app
 
-COPY package.json ./
-RUN npm i
+COPY package.json package-lock.json* ./
+RUN npm install
 
 COPY . .
-
 RUN npm run build
 
-FROM node:lts-alpine AS runner
-WORKDIR /app
+# Production stage using NGINX (lighter than Node)
+FROM nginx:alpine AS runner
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+# Remove default nginx static content
+RUN rm -rf /usr/share/nginx/html/*
 
-COPY --from=builder /app/.next/standalone ./
+# Copy exported Next.js static files
+COPY --from=builder /app/out /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=builder /app/.next/static ./.next/static
-#COPY --from=builder /app/public ./public
+# Copy a custom nginx config (optional but recommended)
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 3000
+EXPOSE 80
 
-ENV PORT=3000
-ENV HOSTNAME=0.0.0.0
-
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]
